@@ -27,5 +27,18 @@ pipeline {
                 echo 'Flask application built successfully!'
             }
         }
+
+        stage('Deploy') {
+            steps {
+                bat '''
+                    if exist C:\\flask-deployment rmdir /S /Q C:\\flask-deployment
+                    mkdir C:\\flask-deployment
+
+                    xcopy /E /I /Y app.py C:\\flask-deployment
+                    xcopy /E /I /Y requirements.txt C:\\flask-deployment
+                    xcopy /E /I /Y templates C:\\flask-deployment\\templates
+                '''
+            }
+        }
     }
 }
