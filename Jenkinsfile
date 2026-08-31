@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
                 git branch: 'main',
@@ -9,17 +10,21 @@ pipeline {
             }
         }
 
-        stage('Install Java') {
+        stage('Install Dependencies') {
             steps {
-                bat '''
-                    java -version
-                '''
+                bat 'python -m pip install -r requirements.txt'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                bat 'python -m unittest test_app.py'
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Build completed successfully!'
+                echo 'Flask application built successfully!'
             }
         }
     }
